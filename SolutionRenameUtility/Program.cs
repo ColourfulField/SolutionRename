@@ -9,7 +9,9 @@ namespace SolutionRenameUtility
     class Program
     {
         private static readonly string _folderSeparator = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "\\" : "/";
-        static void Main(string[] args)
+        private static readonly string[] _excludedFolderPaths = new[] {".git", ".idea"};
+
+    static void Main(string[] args)
         {
             string path = Directory.GetCurrentDirectory();
 
@@ -18,6 +20,7 @@ namespace SolutionRenameUtility
             if (args.Length < 2)
             {
                 PrintUsage();
+                return;
             }
             
             if (args.Length == 3)
@@ -35,6 +38,7 @@ namespace SolutionRenameUtility
             if (oldSolutionName.Length <= 3 || newSolutionName.Length <= 3)
             {
                 Console.WriteLine("Please specify longer solution names. Current name is unsafe to rename as it may accidentally lead to undesired renames.");
+                return;
             }
 
             #endregion
@@ -68,6 +72,10 @@ namespace SolutionRenameUtility
 
             foreach (var folderPath in folderPaths)
             {
+                if (_excludedFolderPaths.Any(x => folderPath.Contains(x)))
+                {
+                    continue;
+                }
                 string renamedFolderPath = Rename(folderPath, oldSolutionName, newSolutionName);
                 RenameSolution(oldSolutionName, newSolutionName, renamedFolderPath);
             }
