@@ -60,16 +60,18 @@ namespace SolutionRenameUtility
             {
                 //CreateBackup(path);
                 RenameSolution(oldSolutionName, newSolutionName, _rootPath);
+                ListRenamedFiles();
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Solution renamed successfully!");
-                ListRenamedFiles();
             }
             else
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("Aborting...");
             }
-            
+
+            Console.ForegroundColor = ConsoleColor.White;
+
         }
 
         private static void RenameSolution(string oldSolutionName, string newSolutionName, string path)
